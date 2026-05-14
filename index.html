@@ -1,0 +1,1464 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الموقع الشامل لاختبارات أخلاقيات وقانون الأمن السيبراني - ITBS206</title>
+    <style>
+        :root {
+            --primary-color: #0f172a;
+            --secondary-color: #2563eb;
+            --accent-color: #38bdf8;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #1e293b;
+            --border-color: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 15px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: var(--card-bg);
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border-color);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin: 0 0 8px 0;
+            font-size: 1.8rem;
+        }
+
+        p.subtitle {
+            color: #64748b;
+            margin: 0;
+            font-size: 0.95rem;
+        }
+
+        /* حاوية التبويبات مع دعم التمرير الأفقي للشاشات الصغيرة */
+        .tabs-wrapper {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .tabs-container {
+            display: flex;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            gap: 6px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border-color);
+            scrollbar-width: thin;
+        }
+
+        .tabs-container::-webkit-scrollbar {
+            height: 6px;
+        }
+        .tabs-container::-webkit-scrollbar-thumb {
+            background-color: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        .tab-btn {
+            white-space: nowrap;
+            padding: 10px 16px;
+            background-color: #f1f5f9;
+            color: #475569;
+            border: 1px solid var(--border-color);
+            border-bottom: none;
+            border-radius: 8px 8px 0 0;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn:hover {
+            background-color: #e2e8f0;
+            color: var(--primary-color);
+        }
+
+        .tab-btn.active {
+            background-color: var(--secondary-color);
+            color: white;
+            border-color: var(--secondary-color);
+            box-shadow: 0 -2px 10px rgba(37, 99, 235, 0.2);
+        }
+
+        /* محتوى التبويبات */
+        .section-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .section-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px dashed var(--border-color);
+        }
+
+        .section-title {
+            color: var(--secondary-color);
+            margin: 0;
+            font-size: 1.3rem;
+            border-right: 4px solid var(--secondary-color);
+            padding-right: 10px;
+        }
+
+        .question-count-badge {
+            background-color: #e0f2fe;
+            color: #0369a1;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        .question-card {
+            background-color: #f8fafc;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            direction: ltr;
+            text-align: left;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .question-text {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .options-group {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: flex-start;
+            padding: 12px 15px;
+            background-color: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.95rem;
+            color: #334155;
+        }
+
+        .option-label:hover {
+            background-color: #f1f5f9;
+            border-color: #94a3b8;
+        }
+
+        .option-label input[type="radio"] {
+            margin-right: 12px;
+            margin-top: 3px;
+            accent-color: var(--secondary-color);
+            cursor: pointer;
+        }
+
+        /* تنسيقات التصحيح */
+        .correct-answer {
+            background-color: #ecfdf5 !important;
+            border-color: var(--success-color) !important;
+            color: #065f46 !important;
+            font-weight: bold;
+        }
+
+        .wrong-answer {
+            background-color: #fef2f2 !important;
+            border-color: var(--danger-color) !important;
+            color: #991b1b !important;
+        }
+
+        .submit-area {
+            margin-top: 30px;
+        }
+
+        .action-btn {
+            width: 100%;
+            padding: 14px;
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+        }
+
+        .action-btn:hover {
+            background-color: #1d4ed8;
+            transform: translateY(-1px);
+        }
+
+        .score-display {
+            margin-top: 20px;
+            padding: 15px;
+            text-align: center;
+            font-size: 1.2rem;
+            border-radius: 10px;
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>بنك أسئلة أخلاقيات وقانون الأمن السيبراني</h1>
+        <p class="subtitle">شامل لجميع الوحدات، الأنشطة، الواجبات، واختبارات المنتصف والنهائي (ITBS206)</p>
+    </header>
+
+    <div class="tabs-wrapper">
+        <div class="tabs-container" id="tabsBar">
+            </div>
+    </div>
+
+    <form id="quizForm">
+        <div id="contentSections">
+            </div>
+    </form>
+</div>
+
+<script>
+    // قاعدة البيانات الشاملة لجميع الملفات المرفقة
+    const completeDatabase = [
+        // ==========================================
+        // 1. الوحدة الأولى
+        // ==========================================
+        {
+            id: "u1",
+            title: "الوحدة 1: الأخلاقيات في الأمن السيبراني",
+            type: "unit",
+            questions: [
+                {
+                    q: "A cybersecurity specialist faces pressure from a client to hack into a competitor's system to gain a competitive advantage. What is the ethical response?",
+                    opts: [
+                        "Refuse and remind the client of legal and ethical boundaries.",
+                        "Comply with the request but avoid leaving a digital footprint.",
+                        "Negotiate a higher fee to justify the risk.",
+                        "Agree if it aligns with the specialist's professional goals."
+                    ],
+                    ans: 0
+                },
+                {
+                    q: "A cybersecurity analyst discovers a vulnerability in a client's system. Reporting this could harm the client's reputation but ignoring it could lead to future data breaches. What should the analyst do?",
+                    opts: [
+                        "Ignore the vulnerability to protect the client's reputation.",
+                        "Report the vulnerability immediately, as protecting security is a duty.",
+                        "Delay reporting until the client's business can address it privately.",
+                        "Inform the public to demonstrate transparency."
+                    ],
+                    ans: 1
+                },
+                {
+                    q: "An ethical hacker is hired to test a company's defenses but discovers that an employee is involved in fraudulent activity. What is the ethical course of action?",
+                    opts: [
+                        "Ignore the fraud to maintain trust with the company.",
+                        "Report it to the company's management.",
+                        "Publicly disclose the fraud as a warning to others.",
+                        "Continue the testing without addressing the fraud."
+                    ],
+                    ans: 1
+                },
+                {
+                    q: "After a cyberattack, a company is deciding how much information to disclose to affected users. Which of the following actions is most ethical?",
+                    opts: [
+                        "Disclose only minimal information to avoid panic.",
+                        "Provide full details about the incident to affected users.",
+                        "Disclose information only if users specifically ask.",
+                        "Refrain from disclosure to protect the company's image."
+                    ],
+                    ans: 1
+                },
+                {
+                    q: "A cybersecurity team is collecting user data for security purposes. How much data should they ethically collect?",
+                    opts: [
+                        "All available data to ensure thorough security.",
+                        "Only data essential for security purposes.",
+                        "Data that might be useful for future projects.",
+                        "Data that includes users' personal information for comprehensive monitoring."
+                    ],
+                    ans: 1
+                },
+                {
+                    q: "A cybersecurity professional suspects unethical behavior within their organization but fears backlash. What action is most ethical?",
+                    opts: [
+                        "Keep quiet to avoid professional consequences.",
+                        "Report the behavior through appropriate internal channels.",
+                        "Share the suspicion publicly to prevent harm.",
+                        "Discuss it with colleagues to decide the best action."
+                    ],
+                    ans: 1
+                },
+                {
+                    q: "A data protection officer is unsure whether to report a minor breach to authorities as required by law. What should they do?",
+                    opts: [
+                        "Ignore the breach if it's minor.",
+                        "Assess and report based on legal requirements.",
+                        "Wait to see if any issues arise before reporting.",
+                        "Only report if affected users notice the breach."
+                    ],
+                    ans: 1
+                },
+                {
+                    q: "A security manager considers monitoring employees without their consent for potential insider threats. Which ethical framework might discourage this approach?",
+                    opts: [
+                        "Utilitarianism, as it could prevent harm to the organization.",
+                        "Virtue ethics, as it may violate honesty and trust.",
+                        "Deontology, as monitoring follows company policy.",
+                        "Situational ethics, allowing monitoring as needed."
+                    ],
+                    ans: 1
+                },
+                {
+                    q: "A company debates whether to implement stronger security measures that might infringe on user privacy. What is the ethical balance?",
+                    opts: [
+                        "Prioritize security, as it benefits more people.",
+                        "Balance privacy with security needs by consulting stakeholders.",
+                        "Focus on security, as privacy is a secondary concern.",
+                        "Delay security measures to avoid privacy issues."
+                    ],
+                    ans: 1
+                },
+                {
+                    q: "A cybersecurity consultant finds that the company has not updated its software for years. Reporting this could harm relationships. What should the consultant do?",
+                    opts: [
+                        "Ignore the issue to maintain a good relationship.",
+                        "Report it to encourage necessary updates.",
+                        "Address it only if asked directly by management.",
+                        "Recommend a workaround to avoid updating."
+                    ],
+                    ans: 1
+                }
+            ]
+        },
+
+        // ==========================================
+        // 2. الوحدة الثانية
+        // ==========================================
+        {
+            id: "u2",
+            title: "الوحدة 2: خصوصية البيانات والأطر التنظيمية",
+            type: "unit",
+            questions: [
+                {
+                    q: "An organization handles credit card data. Which framework should they follow to ensure security?",
+                    opts: ["HIPAA", "GDPR", "PCI DSS", "CFAA"],
+                    ans: 2
+                },
+                {
+                    q: "A company allows users to delete their data upon request. Which principle does this uphold?",
+                    opts: ["Confidentiality", "Integrity", "User control and ownership", "Transparency"],
+                    ans: 2
+                },
+                {
+                    q: "Users are asked to consent to data processing for 'all future uses.' Which principle is potentially violated?",
+                    opts: ["Transparency", "Specificity", "Integrity", "Availability"],
+                    ans: 1
+                },
+                {
+                    q: "A European company collects user data without consent. An employee raises concerns. Which regulation requires explicit consent for data collection?",
+                    opts: ["CCPA", "HIPAA", "GDPR", "CFAA"],
+                    ans: 2
+                },
+                {
+                    q: "A business wants to store vast amounts of user data to 'ensure completeness.' Is this compliant with GDPR?",
+                    opts: [
+                        "Yes, completeness is essential.",
+                        "No, GDPR emphasizes data minimization.",
+                        "Yes, if users are informed.",
+                        "No, only U.S. laws apply."
+                    ],
+                    ans: 1
+                },
+                {
+                    q: "A cybersecurity firm uses detailed surveillance on employees to prevent data breaches. How should they ethically address employee privacy?",
+                    opts: [
+                        "Explain and limit monitoring to high-risk areas.",
+                        "Continue monitoring without explanation.",
+                        "Stop monitoring entirely.",
+                        "Monitor only during work hours."
+                    ],
+                    ans: 0
+                },
+                {
+                    q: "An app collects user location data. If consent wasn't clear, how should the company proceed?",
+                    opts: [
+                        "Continue data collection.",
+                        "Inform users and obtain explicit consent.",
+                        "Stop all data usage.",
+                        "Assume implicit consent if users downloaded the app."
+                    ],
+                    ans: 1
+                },
+                {
+                    q: "A cybersecurity firm wants to use client data beyond agreed-upon purposes. How should it proceed?",
+                    opts: [
+                        "Assume implied consent.",
+                        "Encrypt the data and proceed.",
+                        "Continue as it aligns with security goals.",
+                        "Obtain new, explicit consent from clients."
+                    ],
+                    ans: 3
+                },
+                {
+                    q: "To increase security, a tech company collects all possible data from users. Which principle does this violate?",
+                    opts: ["Data ownership", "Availability", "User consent", "Data minimization"],
+                    ans: 3
+                },
+                {
+                    q: "After a breach, a company notifies affected individuals within the required period. Which regulation's compliance does this reflect?",
+                    opts: ["HIPAA", "GDPR", "CFAA", "CCPA"],
+                    ans: 1
+                }
+            ]
+        },
+
+        // ==========================================
+        // 3. الوحدة الثالثة
+        // ==========================================
+        {
+            id: "u3",
+            title: "الوحدة 3: قوانين وتشريعات الجرائم السيبرانية",
+            type: "unit",
+            questions: [
+                {
+                    q: "An employee accesses confidential files to commit fraud. Under the CFAA, which offense does this represent?",
+                    opts: ["Unauthorized Modification", "Fraud and Theft", "Data Minimization", "Transparency Violation"],
+                    ans: 1
+                },
+                {
+                    q: "A hospital lacks technical safeguards for protecting patient information. Which regulation is likely violated?",
+                    opts: ["GDPR", "HIPAA", "PCI-DSS", "SOX"],
+                    ans: 1
+                },
+                {
+                    q: "A company processes credit card data without encryption. What does PCI-DSS require in this case?",
+                    opts: ["Data Retention", "Encryption of Sensitive Data", "Data Minimization", "User Consent"],
+                    ans: 1
+                },
+                {
+                    q: "A company is gathering large amounts of customer data without clarifying its purpose. Which GDPR principle is at risk?",
+                    opts: ["Data Minimization", "Right to Access", "Availability", "User Consent"],
+                    ans: 0
+                },
+                {
+                    q: "A European client requests to delete their personal data from a company's database. Which GDPR right supports this?",
+                    opts: ["Right to Rectification", "Right to Data Portability", "Right to Erasure", "Right to Object"],
+                    ans: 2
+                },
+                {
+                    q: "A cybersecurity analyst detects unauthorized access on a company's network. Which U.S. law would apply to prosecute the attacker?",
+                    opts: ["CCPA", "GDPR", "HIPAA", "CFAA"],
+                    ans: 3
+                },
+                {
+                    q: "After a data breach, a company fails to notify affected EU users. Which GDPR requirement is not met?",
+                    opts: ["Right to Object", "Breach Notification", "Data Minimization", "Right to Portability"],
+                    ans: 1
+                },
+                {
+                    q: "A penetration tester begins testing a client's system without signed authorization. Under which law could they be liable?",
+                    opts: ["CFAA", "PCI-DSS", "SOX", "GDPR"],
+                    ans: 0
+                },
+                {
+                    q: "A California resident wants to know what personal data a company collects. Which CCPA provision supports this?",
+                    opts: ["Right to Delete", "Non-Discrimination", "Right to Know", "Right to Opt-Out"],
+                    ans: 2
+                },
+                {
+                    q: "A U.K.-based hacker is prosecuted for accessing a government system without authorization. Which law applies?",
+                    opts: ["GDPR", "CCPA", "CMA", "HIPAA"],
+                    ans: 2
+                }
+            ]
+        },
+
+        // ==========================================
+        // 4. الوحدة الرابعة
+        // ==========================================
+        {
+            id: "u4",
+            title: "الوحدة 4: الملكية الفكرية والمسؤوليات الرقمية",
+            type: "unit",
+            questions: [
+                {
+                    q: "An organization mandates regular software updates to prevent unauthorized access. Which responsibility does this reinforce?",
+                    opts: ["Reporting Misuse", "Maintaining Cyber Hygiene", "Digital Ownership", "Freedom of Expression"],
+                    ans: 1
+                },
+                {
+                    q: "An employee uses a competitor's logo on a phishing website to deceive users. Which IP law is relevant here?",
+                    opts: ["Copyright", "Patent", "Trade Secret", "Trademark"],
+                    ans: 3
+                },
+                {
+                    q: "A security consultant analyzes proprietary source code without permission. Which IP law is likely violated?",
+                    opts: ["Copyright", "Patent", "Trademark", "Trade Secret"],
+                    ans: 0
+                },
+                {
+                    q: "An employee downloads pirated software on a work computer, resulting in a data breach. Which concept does this breach illustrate?",
+                    opts: ["License violation", "Software Piracy", "Digital Theft", "Trade Secret Violation"],
+                    ans: 1
+                },
+                {
+                    q: "A cybersecurity analyst publicly shares information about a vulnerability without consent. This act compromises which responsibility?",
+                    opts: ["Right to Privacy", "Maintaining Cyber Hygiene", "Ethical Use of Information", "Freedom of Expression"],
+                    ans: 2
+                },
+                {
+                    q: "A manager restricts access to sensitive files for employees with limited roles. This practice respects which digital responsibility?",
+                    opts: ["Right to Access Information", "Freedom of Expression", "Respect for Privacy", "Digital Ownership"],
+                    ans: 2
+                },
+                {
+                    q: "An employee accesses private client data without permission to expedite a report. Which digital responsibility does this action violate?",
+                    opts: ["Right to Access Information", "Respect for Privacy", "Freedom of Expression", "Digital Hygiene"],
+                    ans: 1
+                },
+                {
+                    q: "A tech firm releases software with an encrypted algorithm, keeping details confidential. Which IP protection is most relevant?",
+                    opts: ["Patent", "Trademark", "Copyright", "Trade Secret"],
+                    ans: 3
+                },
+                {
+                    q: "A company replicates another's patented cybersecurity software without permission. Which IP law does this infringe?",
+                    opts: ["Trademark", "Copyright", "Patent", "Trade Secret"],
+                    ans: 2
+                },
+                {
+                    q: "A company installs one software license on multiple computers, exceeding its licensed scope. This action is called:",
+                    opts: ["End-user piracy", "Counterfeiting", "Softlifting", "License infringement"],
+                    ans: 2
+                }
+            ]
+        },
+
+        // ==========================================
+        // 5. الوحدة الخامسة
+        // ==========================================
+        {
+            id: "u5",
+            title: "الوحدة 5: الاختراق الأخلاقي والأدلة الرقمية",
+            type: "unit",
+            questions: [
+                {
+                    q: "A hacker launches a ransomware attack on a company to demand payment. This type of hacking is considered:",
+                    opts: ["White-Hat hacking", "Grey-Hat hacking", "Black-Hat hacking", "Ethical hacking"],
+                    ans: 2
+                },
+                {
+                    q: "An investigator documents the handling of a hard drive from collection to storage. This process is known as:",
+                    opts: ["Evidence Analysis", "Chain of Custody", "Incident Response", "Digital Footprinting"],
+                    ans: 1
+                },
+                {
+                    q: "A tester is asked to perform testing without informing all employees. This request might violate:",
+                    opts: ["Ethical transparency standards", "Confidentiality requirements", "Technical testing protocols", "Professional certifications"],
+                    ans: 0
+                },
+                {
+                    q: "A U.S.-based ethical hacker conducts a penetration test on a foreign company without permission. Which law could they be violating?",
+                    opts: ["GDPR", "HIPAA", "Computer Fraud and Abuse Act (CFAA)", "SOX"],
+                    ans: 2
+                },
+                {
+                    q: "A hacker discloses a vulnerability they found accidentally in a public system. This hacker is known as:",
+                    opts: ["White-Hat", "Grey-Hat", "Black-Hat", "Penetration Tester"],
+                    ans: 1
+                },
+                {
+                    q: "During a penetration test, a tester identifies data outside the agreed-upon scope. What is their best course of action?",
+                    opts: ["Report it immediately", "Ignore it to avoid liability", "Continue testing without notifying", "Document it but do not disclose"],
+                    ans: 0
+                },
+                {
+                    q: "A White-Hat hacker discovers a critical flaw in a government website. The government refuses to address it. What ethical action could they consider?",
+                    opts: ["Publish the flaw publicly", "Report it to a higher authority", "Ignore the vulnerability", "Sell the information"],
+                    ans: 1
+                },
+                {
+                    q: "A company requests a penetration tester to ensure no personal data is accessed during testing. This aligns with:",
+                    opts: ["GDPR compliance", "CFAA requirements", "Trade secret laws", "Trademark regulations"],
+                    ans: 0
+                },
+                {
+                    q: "A digital forensics investigator needs to retrieve deleted emails for evidence. What initial step ensures the evidence's integrity?",
+                    opts: ["Analyze directly on the computer", "Create a forensic image of the data", "Print the emails for documentation", "View the emails in their original application"],
+                    ans: 1
+                },
+                {
+                    q: "A cybersecurity consultant performs a vulnerability assessment without obtaining prior authorization. This action is:",
+                    opts: ["Legal if no data is accessed", "Potentially illegal due to lack of consent", "Ethical if vulnerabilities are reported", "Standard practice in ethical hacking"],
+                    ans: 1
+                }
+            ]
+        },
+
+        // ==========================================
+        // 6. الوحدة السادسة
+        // ==========================================
+        {
+            id: "u6",
+            title: "الوحدة 6: العمليات السيبرانية والقانون الدولي",
+            type: "unit",
+            questions: [
+                {
+                    q: "A multinational corporation suspects it is being targeted by foreign cyber espionage. Which international treaty provides guidelines for cross-border cooperation in combatting cybercrime?",
+                    opts: ["Geneva Convention", "Budapest Convention", "Kyoto Protocol", "Hague Convention"],
+                    ans: 1
+                },
+                {
+                    q: "A nation-state conducts a cyberattack against a neighboring country's power grid, causing significant civilian disruption. According to the Tallinn Manual, this action could be classified as:",
+                    opts: ["A non-violent act", "A use of force under international law", "Legal cyber espionage", "Permissible under all conditions"],
+                    ans: 1
+                },
+                {
+                    q: "During a cyber conflict, a state deploys malware that unintentionally affects civilian hospitals. Which ethical principle is most likely violated?",
+                    opts: ["Necessity", "Proportionality", "Transparency", "Consent"],
+                    ans: 1
+                },
+                {
+                    q: "A nation-state attacks foreign intellectual property databases during peacetime. This action is addressed by:",
+                    opts: ["Geneva Convention", "Tallinn Manual 2.0 on Peacetime Cyber Operations", "UN GGE Reports on Warfare", "NATO Article 5"],
+                    ans: 1
+                },
+                {
+                    q: "A government uses phishing tactics to gather intelligence on foreign industries. This form of intelligence gathering is generally classified as:",
+                    opts: ["Legal under all circumstances", "Corporate espionage", "Cyber espionage", "Hacktivism"],
+                    ans: 2
+                },
+                {
+                    q: "A cyber operation targets military and civilian infrastructure. The Tallinn Manual requires distinguishing between these targets based on the principle of:",
+                    opts: ["Consent", "Necessity", "Distinction", "Attribution"],
+                    ans: 2
+                },
+                {
+                    q: "An organization discovers a state-sponsored attack on its systems but cannot conclusively determine the origin. This difficulty illustrates the challenge of:",
+                    opts: ["Escalation", "Proportionality", "Attribution", "Necessity"],
+                    ans: 2
+                },
+                {
+                    q: "A cybersecurity analyst identifies a potential cyber threat from another country targeting government systems. This type of activity is typically classified as:",
+                    opts: ["Cyber warfare", "State-sponsored cyber espionage", "Corporate espionage", "Hacktivism"],
+                    ans: 1
+                },
+                {
+                    q: "A country's cyber defense team deploys a response proportional to an attack that disabled part of its grid. This aligns with which Tallinn Manual principle?",
+                    opts: ["Proportionality", "Necessity", "Distinction", "Attribution"],
+                    ans: 0
+                },
+                {
+                    q: "An intelligence agency justifies preemptive cyber strikes to prevent attacks. Which ethical principle may challenge this approach?",
+                    opts: ["Utilitarianism", "Deontological ethics", "Proportionality", "Attribution"],
+                    ans: 1
+                }
+            ]
+        },
+
+        // ==========================================
+        // 7. الواجب الأول
+        // ==========================================
+        {
+            id: "hw1",
+            title: "الواجب الأول (Homework 1)",
+            type: "hw",
+            questions: [
+                {
+                    q: "A firm restricts access to financial records to authorized personnel only. Which best practice does this illustrate?",
+                    opts: ["Incident response", "Data minimization", "Access control", "Transparency"],
+                    ans: 2
+                },
+                {
+                    q: "A cybersecurity expert identifies a potential breach in a competitor's public-facing system. What action is most ethical?",
+                    opts: [
+                        "Inform the competitor directly and offer assistance.",
+                        "Publicly disclose the breach as a learning case.",
+                        "Report the breach to authorities anonymously.",
+                        "Ignore it, as it does not involve their own company."
+                    ],
+                    ans: 0
+                },
+                {
+                    q: "During a security audit, a consultant discovers that a client is storing unencrypted sensitive customer data. What action is most ethical?",
+                    opts: [
+                        "Recommend the client implement encryption and report if ignored.",
+                        "Ignore the issue to avoid losing the client's business.",
+                        "Publicly disclose the vulnerability to press the client to act.",
+                        "Encrypt the data without the client's consent."
+                    ],
+                    ans: 0
+                },
+                {
+                    q: "A cybersecurity analyst notices an employee frequently accesses sensitive data without a clear business need. What should the analyst do?",
+                    opts: [
+                        "Monitor the employee's activity discreetly without reporting.",
+                        "Inform their supervisor and suggest further investigation.",
+                        "Ignore it since no clear policy violation occurred.",
+                        "Confront the employee directly about their behavior."
+                    ],
+                    ans: 1
+                },
+                {
+                    q: "A data analyst suggests that sharing customer data with third parties could generate additional revenue. What ethical principle should guide this decision?",
+                    opts: [
+                        "Profit maximization should guide company policy.",
+                        "Privacy considerations should outweigh potential revenue.",
+                        "Customer consent can be ignored for low-risk data.",
+                        "Only anonymized data should be shared."
+                    ],
+                    ans: 1
+                },
+                {
+                    q: "An organization processes U.S. customer health data without security measures. Which law is potentially violated?",
+                    opts: ["HIPAA", "GDPR", "CCPA", "CFAA"],
+                    ans: 0
+                },
+                {
+                    q: "A company decides to delete old sensitive information to prevent security risks. What ethical principle does this follow?",
+                    opts: ["Data minimization", "Data retention", "Availability", "Transparency"],
+                    ans: 0
+                },
+                {
+                    q: "An employee accesses personal customer data for unauthorized purposes. Which ethical principle is violated?",
+                    opts: ["Confidentiality", "Data minimization", "Integrity", "Availability"],
+                    ans: 0
+                },
+                {
+                    q: "A company stores user health information in plain text files. How should they ethically and legally handle this data?",
+                    opts: [
+                        "Encrypt the data to prevent unauthorized access.",
+                        "Add a password to files.",
+                        "Limit access only to IT staff.",
+                        "Continue as it is cost-effective."
+                    ],
+                    ans: 0
+                },
+                {
+                    q: "An ethical hacker is conducting a penetration test but accidentally accesses private client data. What is the ethical course of action?",
+                    opts: [
+                        "Ignore it, as accessing data was not the goal.",
+                        "Document and report the incident to management.",
+                        "Continue without reporting to avoid embarrassment.",
+                        "Delete any record of accessing the data."
+                    ],
+                    ans: 1
+                }
+            ]
+        },
+
+        // ==========================================
+        // 8. النشاط الأول
+        // ==========================================
+        {
+            id: "act1",
+            title: "النشاط الأول (Activity 1)",
+            type: "hw",
+            questions: [
+                {
+                    q: "An organization wants to repurpose user data beyond initial consent. What should it do?",
+                    opts: [
+                        "Obtain new, explicit consent from users.",
+                        "Notify users without asking.",
+                        "Encrypt data and proceed.",
+                        "Continue as per original consent."
+                    ],
+                    ans: 0
+                },
+                {
+                    q: "A company collects extensive personal data for future analysis. Which GDPR principle might this violate?",
+                    opts: ["Incident response", "Data minimization", "Transparency", "Confidentiality"],
+                    ans: 1
+                },
+                {
+                    q: "An organization develops an ISMS and adopts international security practices. Which framework are they likely following?",
+                    opts: ["PCI-DSS", "NIST CSF", "ISO/IEC 27001", "CFAA"],
+                    ans: 2
+                },
+                {
+                    q: "To secure its database, a company reduces user data fields collected. Which ethical principle is this an example of?",
+                    opts: ["Transparency", "Availability", "Data minimization", "Integrity"],
+                    ans: 2
+                },
+                {
+                    q: "A Californian business fails to inform customers about data usage practices. Which legal requirement does this contradict?",
+                    opts: ["CCPA", "GDPR", "HIPAA", "CFAA"],
+                    ans: 0
+                },
+                {
+                    q: "A company mishandles financial records, leading to potential inaccuracies. Which compliance framework addresses this?",
+                    opts: ["SOX", "HIPAA", "GDPR", "PCI-DSS"],
+                    ans: 0
+                },
+                {
+                    q: "A company needs a risk-based approach to cybersecurity that is flexible. Which framework might they adopt?",
+                    opts: ["GDPR", "ISO/IEC 27001", "NIST Cybersecurity Framework", "HIPAA"],
+                    ans: 2
+                },
+                {
+                    q: "A financial institution implements audit trails to comply with security requirements. This best aligns with:",
+                    opts: ["SOX", "PCI-DSS", "GDPR", "HIPAA"],
+                    ans: 0
+                },
+                {
+                    q: "A cybersecurity company installs extensive monitoring on user systems without consent. How should it ethically adjust this?",
+                    opts: [
+                        "Reduce monitoring levels.",
+                        "Obtain user consent before monitoring.",
+                        "Continue if justified by security needs.",
+                        "Stop monitoring entirely."
+                    ],
+                    ans: 1
+                },
+                {
+                    q: "A health clinic must notify patients about a data breach. This action is required under which HIPAA rule?",
+                    opts: ["Privacy Rule", "Security Rule", "Breach Notification Rule", "Confidentiality Rule"],
+                    ans: 2
+                }
+            ]
+        },
+
+        // ==========================================
+        // 9. الواجب الثاني
+        // ==========================================
+        {
+            id: "hw2",
+            title: "الواجب الثاني (Homework 2)",
+            type: "hw",
+            questions: [
+                {
+                    q: "A company is found selling counterfeit versions of popular software. What type of software piracy does this represent?",
+                    opts: ["End-user piracy", "Counterfeiting", "Softlifting", "License sharing"],
+                    ans: 1
+                },
+                {
+                    q: "A healthcare organization in the U.S. suffers a data breach affecting over 500 individuals. Under HIPAA, what is their reporting obligation?",
+                    opts: ["Notify within 60 days", "No notification is required", "Report only if requested", "Notify within 30 days"],
+                    ans: 0
+                },
+                {
+                    q: "A data breach impacts customers' credit card information. Which standard requires notifying affected customers and relevant payment processors?",
+                    opts: ["PCI-DSS", "SOX", "HIPAA", "GDPR"],
+                    ans: 0
+                },
+                {
+                    q: "After a data breach, an EU-based company has 72 hours to report it. This requirement is part of:",
+                    opts: ["HIPAA", "SOX", "GDPR", "PCI-DSS"],
+                    ans: 2
+                },
+                {
+                    q: "An online platform uses DRM to restrict access to paid content. Which ethical principle should they consider?",
+                    opts: ["Right to Privacy", "Freedom of Expression", "Accessibility", "Digital Ownership"],
+                    ans: 3
+                },
+                {
+                    q: "A company modifies and distributes open-source software as their proprietary product. Which ethical practice does this violate?",
+                    opts: ["Proprietary Rights", "Trade Secrets", "Software License Compliance", "Digital Hygiene"],
+                    ans: 2
+                },
+                {
+                    q: "A cybersecurity case is dismissed because digital evidence was improperly stored. Which legal principle is likely violated?",
+                    opts: ["Chain of Custody", "Transparency", "Incident Reporting", "Accountability"],
+                    ans: 0
+                },
+                {
+                    q: "A forensic team recovers and analyzes data for a criminal case. To ensure admissibility, they must demonstrate:",
+                    opts: ["Speed of data recovery", "Relevance and reliability", "Cost-effectiveness", "Use of modern tools"],
+                    ans: 1
+                },
+                {
+                    q: "A cybersecurity analyst accesses licensed software content without permission. Which licensing concept is compromised?",
+                    opts: ["License Exclusivity", "Full Ownership", "Digital Rights", "Unauthorized Access"],
+                    ans: 3
+                },
+                {
+                    q: "A cybersecurity firm uses a trial version of software in client work without purchasing a license. This action breaches:",
+                    opts: ["Full Ownership Rights", "Trade Secret", "Licensing Terms", "Trademark Laws"],
+                    ans: 2
+                }
+            ]
+        },
+
+        // ==========================================
+        // 10. النشاط الثاني
+        // ==========================================
+        {
+            id: "act2",
+            title: "النشاط الثاني (Activity 2)",
+            type: "hw",
+            questions: [
+                {
+                    q: "A company discovers sensitive data potentially gathered by a state-sponsored entity. The ethical response for cybersecurity staff is to:",
+                    opts: ["Ignore the finding", "Report it to appropriate authorities", "Retaliate with a counter-attack", "Store the data for future use"],
+                    ans: 1
+                },
+                {
+                    q: "A U.S. company's financial records are compromised in a breach. Which law requires them to report this incident?",
+                    opts: ["GDPR", "SOX", "HIPAA", "PCI-DSS"],
+                    ans: 1
+                },
+                {
+                    q: "A cybersecurity professional is approached to participate in offensive cyber warfare. Which ethical principle would likely discourage their involvement?",
+                    opts: ["Non-maleficence", "Transparency", "Data minimization", "Accountability"],
+                    ans: 0
+                },
+                {
+                    q: "A cybersecurity consultant discovers a vulnerability but lacks permission to report it. Which ethical principle should they consider?",
+                    opts: ["Non-interference", "Confidentiality", "Transparency", "Data ownership"],
+                    ans: 1
+                },
+                {
+                    q: "A cyber operation during peacetime disrupts international banking systems. Which aspect of the Tallinn Manual would this violate?",
+                    opts: ["Necessity", "Peacetime norms", "Military distinction", "Just War Theory"],
+                    ans: 1
+                },
+                {
+                    q: "During a cyber conflict, an attacker disables emergency response systems, affecting public safety. According to the Tallinn Manual, this may be considered:",
+                    opts: [
+                        "Justifiable as a strategic move",
+                        "A violation of international humanitarian law",
+                        "Non-violent and permissible",
+                        "A necessary measure"
+                    ],
+                    ans: 1
+                },
+                {
+                    q: "A cybersecurity analyst employed by the government is asked to assist in a state-sponsored cyber operation. Which ethical code should they consult?",
+                    opts: ["Tallinn Manual", "CEH Code of Ethics", "GDPR", "HIPAA Compliance Guide"],
+                    ans: 1
+                },
+                {
+                    q: "An employee bypasses encryption in an emergency to access critical data. Which ethical model could assess this action?",
+                    opts: ["Utilitarianism", "Deontology", "Virtue Ethics", "Ethical Egoism"],
+                    ans: 0
+                },
+                {
+                    q: "A tester uncovers a vulnerability in critical infrastructure. The company is unwilling to fix it. What ethical approach might the tester take?",
+                    opts: [
+                        "Publicly disclose the vulnerability",
+                        "Report it to a regulatory authority",
+                        "Sell the information to a third party",
+                        "Ignore it due to legal risks"
+                    ],
+                    ans: 1
+                },
+                {
+                    q: "A White-Hat hacker finds an unreported vulnerability but fears legal consequences. Using Tucker's model, what should they first consider?",
+                    opts: [
+                        "Ignore the issue to avoid legal risk",
+                        "Report it anonymously",
+                        "Identify the facts and risks involved",
+                        "Publicize the vulnerability"
+                    ],
+                    ans: 2
+                }
+            ]
+        },
+
+        // ==========================================
+        // 11. الميد (Midterm)
+        // ==========================================
+        {
+            id: "mid",
+            title: "اختبار الميد (Midterm Exam)",
+            type: "exam",
+            questions: [
+                {
+                    q: "What is the key difference between CFAA and CMA?",
+                    opts: [
+                        "CFAA is used in healthcare, while CMA is used in finance",
+                        "CMA addresses intent to commit further crimes after unauthorized access",
+                        "CFAA was created after CMA",
+                        "CMA only applies to malware crimes"
+                    ],
+                    ans: 1
+                },
+                {
+                    q: "Which ethical principle focuses on producing the greatest benefit for the greatest number of people?",
+                    opts: ["Utilitarianism", "Deontology", "Virtue Ethics", "Contractarianism"],
+                    ans: 0
+                },
+                {
+                    q: "Which of the following frameworks provides guidelines for implementing cybersecurity controls?",
+                    opts: ["HIPAA", "CFAA", "CCPA", "ISO/IEC 27001"],
+                    ans: 3
+                },
+                {
+                    q: "Which regulation primarily governs the ethical handling of personal data within the European Union?",
+                    opts: ["HIPAA", "GDPR", "CCPA", "CFAA"],
+                    ans: 1
+                },
+                {
+                    q: "What is the primary objective of data protection in cybersecurity?",
+                    opts: [
+                        "To collect as much data as possible",
+                        "To ensure personal data is shared widely",
+                        "To secure personal and sensitive information from unauthorized access",
+                        "To store data indefinitely"
+                    ],
+                    ans: 2
+                },
+                {
+                    q: "What was the primary cause of the Equifax data breach in 2017?",
+                    opts: ["Insider threat", "Phishing attack", "Malware infection", "Failure to patch a known vulnerability"],
+                    ans: 3
+                },
+                {
+                    q: "Which ethical principle focuses on balancing individual privacy with organizational security needs?",
+                    opts: ["Data ownership", "Privacy", "Integrity", "Availability"],
+                    ans: 1
+                },
+                {
+                    q: "Which law in the U.S. focuses on protecting patient health information?",
+                    opts: ["GDPR", "HIPAA", "CCPA", "SOX"],
+                    ans: 1
+                },
+                {
+                    q: "Under the CCPA, what right allows consumers to request the deletion of their personal data?",
+                    opts: ["Right to Object", "Right to Delete", "Right to Portability", "Right to Monitor"],
+                    ans: 1
+                },
+                {
+                    q: "Which of the following is a key principle of the General Data Protection Regulation (GDPR)?",
+                    opts: ["Network monitoring", "Privacy by Design", "Data harvesting", "Zoombombing"],
+                    ans: 1
+                },
+                {
+                    q: "What should cybersecurity professionals do in case of a data breach?",
+                    opts: [
+                        "Hide the breach from users and regulators",
+                        "Wait until a lawsuit is filed to respond",
+                        "Report the breach promptly, identify causes, and implement mitigation measures",
+                        "Delete all affected data without notification"
+                    ],
+                    ans: 2
+                },
+                {
+                    q: "What is one of the key ethical challenges in cybersecurity related to data collection?",
+                    opts: ["Ensuring system uptime", "Implementing encryption", "Balancing privacy and security", "Managing user access"],
+                    ans: 2
+                },
+                {
+                    q: "What is the main goal of the General Data Protection Regulation (GDPR)?",
+                    opts: [
+                        "To protect U.S. healthcare data",
+                        "To monitor internet traffic globally",
+                        "To give EU citizens control over their personal data",
+                        "To regulate financial transactions"
+                    ],
+                    ans: 2
+                },
+                {
+                    q: "What is the main objective of ethical handling of sensitive information in cybersecurity?",
+                    opts: [
+                        "To publicly share all organizational data",
+                        "To protect sensitive data from unauthorized access, disclosure, and misuse",
+                        "To minimize data use in all systems",
+                        "To store sensitive data indefinitely"
+                    ],
+                    ans: 1
+                },
+                {
+                    q: "Which principle ensures that users must be informed about how their data is being collected, used, and stored?",
+                    opts: ["Respect for Autonomy", "Informed Consent", "Transparency", "Data Ownership"],
+                    ans: 2
+                },
+                {
+                    q: "Which ethical theory emphasizes adherence to rules and duties regardless of consequences?",
+                    opts: ["Deontology", "Utilitarianism", "Virtue Ethics", "Consequentialism"],
+                    ans: 0
+                },
+                {
+                    q: "Which of the following best defines data minimization?",
+                    opts: [
+                        "Storing data indefinitely in case it is needed later",
+                        "Collecting as much data as possible to ensure completeness",
+                        "Deleting all data after a transaction is complete",
+                        "Collecting only the necessary amount of data for a specific purpose"
+                    ],
+                    ans: 3
+                },
+                {
+                    q: "How does encryption help in protecting sensitive data?",
+                    opts: [
+                        "It makes data accessible to anyone with physical access",
+                        "It converts data into an unreadable format, protecting it from unauthorized access",
+                        "It removes the need for passwords",
+                        "It deletes data after 24 hours"
+                    ],
+                    ans: 1
+                },
+                {
+                    q: "Which professional code of ethics is highlighted in the module for guiding cybersecurity professionals?",
+                    opts: ["ISO 27001", "ACM, (ISC)² and IEEE", "GDPR", "NIST"],
+                    ans: 1
+                },
+                {
+                    q: "What is the ethical principle of 'Data Minimization'?",
+                    opts: [
+                        "Using data for multiple unauthorized purposes",
+                        "Storing all data permanently",
+                        "Collecting as much personal data as possible",
+                        "Collecting only the necessary amount of data needed for a specific purpose"
+                    ],
+                    ans: 3
+                }
+            ]
+        },
+
+        // ==========================================
+        // 12. الفاينل (Final Exam)
+        // ==========================================
+        {
+            id: "final",
+            title: "الاختبار النهائي (Final Exam)",
+            type: "exam",
+            questions: [
+                {
+                    q: "A U.S.-based ethical hacker conducts a penetration test on a foreign company without permission. Which law could they be violating?",
+                    opts: ["Computer Fraud and Abuse Act (CFAA)", "GDPR", "HIPAA", "SOX"],
+                    ans: 0
+                },
+                {
+                    q: "A White-Hat hacker discovers a critical flaw in a government website. The government refuses to address it. What ethical action could they consider?",
+                    opts: ["Publish the flaw publicly", "Report it to a higher authority", "Ignore the vulnerability", "Sell the information"],
+                    ans: 1
+                },
+                {
+                    q: "A company installs one software license on multiple computers, exceeding its licensed scope. This action is called:",
+                    opts: ["Counterfeiting", "Softlifting", "End-user piracy", "License sharing"],
+                    ans: 1
+                },
+                {
+                    q: "A company replicates another's patented cybersecurity software without permission. Which IP law does this infringe?",
+                    opts: ["Copyright", "Trademark", "Patent", "Trade Secret"],
+                    ans: 2
+                },
+                {
+                    q: "A company requests a penetration tester to ensure no personal data is accessed during testing. This aligns with:",
+                    opts: ["GDPR compliance", "CFAA requirements", "Trade secret laws", "Trademark regulations"],
+                    ans: 0
+                },
+                {
+                    q: "A country's cyber defense team deploys a response proportional to an attack that disabled part of its grid. This aligns with which Tallinn Manual principle?",
+                    opts: ["Distinction", "Necessity", "Attribution", "Proportionality"],
+                    ans: 3
+                },
+                {
+                    q: "A cyber operation targets military and civilian infrastructure. The Tallinn Manual requires distinguishing between these targets based on the principle of:",
+                    opts: ["Consent", "Distinction", "Necessity", "Attribution"],
+                    ans: 1
+                },
+                {
+                    q: "A cybersecurity analyst identifies a potential cyber threat from another country targeting government systems. This type of activity is typically classified as:",
+                    opts: ["Cyber warfare", "State-sponsored cyber espionage", "Corporate espionage", "Hacktivism"],
+                    ans: 1
+                },
+                {
+                    q: "A cybersecurity analyst publicly shares information about a vulnerability without consent. This act compromises which responsibility?",
+                    opts: ["Right to Privacy", "Maintaining Cyber Hygiene", "Ethical Use of Information", "Freedom of Expression"],
+                    ans: 2
+                },
+                {
+                    q: "A cybersecurity consultant performs a vulnerability assessment without obtaining prior authorization. This action is:",
+                    opts: ["Legal if no data is accessed", "Potentially illegal due to lack of consent", "Ethical if vulnerabilities are reported", "Standard practice in ethical hacking"],
+                    ans: 1
+                },
+                {
+                    q: "A digital forensics investigator needs to retrieve deleted emails for evidence. What initial step ensures the evidence's integrity?",
+                    opts: ["Analyze directly on the computer", "Create a forensic image of the data", "Print the emails for documentation", "View the emails in their original application"],
+                    ans: 1
+                },
+                {
+                    q: "A government uses phishing tactics to gather intelligence on foreign industries. This form of intelligence gathering is generally classified as:",
+                    opts: ["Legal under all circumstances", "Corporate espionage", "Cyber espionage", "Hacktivism"],
+                    ans: 2
+                },
+                {
+                    q: "A hacker discloses a vulnerability they found accidentally in a public system. This hacker is known as:",
+                    opts: ["White-Hat", "Grey-Hat", "Black-Hat", "Penetration Tester"],
+                    ans: 1
+                },
+                {
+                    q: "A hacker launches a ransomware attack on a company to demand payment. This type of hacking is considered:",
+                    opts: ["White-Hat hacking", "Grey-Hat hacking", "Black-Hat hacking", "Ethical hacking"],
+                    ans: 2
+                },
+                {
+                    q: "A manager restricts access to sensitive files for employees with limited roles. This practice respects which digital responsibility?",
+                    opts: ["Right to Access Information", "Freedom of Expression", "Respect for Privacy", "Digital Ownership"],
+                    ans: 2
+                },
+                {
+                    q: "A multinational corporation suspects it is being targeted by foreign cyber espionage. Which international treaty provides guidelines for cross-border cooperation in combatting cybercrime?",
+                    opts: ["Geneva Convention", "Budapest Convention", "Kyoto Protocol", "Hague Convention"],
+                    ans: 1
+                },
+                {
+                    q: "A nation-state attacks foreign intellectual property databases during peacetime. This action is addressed by:",
+                    opts: ["Geneva Convention", "Tallinn Manual 2.0 on Peacetime Cyber Operations", "UN GGE Reports on Warfare", "NATO Article 5"],
+                    ans: 1
+                },
+                {
+                    q: "A nation-state conducts a cyberattack against a neighboring country's power grid, causing significant civilian disruption. According to the Tallinn Manual, this action could be classified as:",
+                    opts: ["A non-violent act", "A use of force under international law", "Legal cyber espionage", "Permissible under all conditions"],
+                    ans: 1
+                },
+                {
+                    q: "A security consultant analyzes proprietary source code without permission. Which IP law is likely violated?",
+                    opts: ["Copyright", "Patent", "Trademark", "Trade Secret"],
+                    ans: 0
+                },
+                {
+                    q: "A tech firm releases software with an encrypted algorithm, keeping details confidential. Which IP protection is most relevant?",
+                    opts: ["Patent", "Trademark", "Copyright", "Trade Secret"],
+                    ans: 3
+                },
+                {
+                    q: "A tester is asked to perform testing without informing all employees. This request might violate:",
+                    opts: ["Ethical transparency standards", "Confidentiality requirements", "Technical testing protocols", "Professional certifications"],
+                    ans: 0
+                },
+                {
+                    q: "An employee accesses private client data without permission to expedite a report. Which digital responsibility does this action violate?",
+                    opts: ["Right to Access Information", "Respect for Privacy", "Freedom of Expression", "Digital Hygiene"],
+                    ans: 1
+                },
+                {
+                    q: "An employee downloads pirated software on a work computer, resulting in a data breach. Which concept does this breach illustrate?",
+                    opts: ["License violation", "Software Piracy", "Digital Theft", "Trade Secret Violation"],
+                    ans: 1
+                },
+                {
+                    q: "An employee uses a competitor's logo on a phishing website to deceive users. Which IP law is relevant here?",
+                    opts: ["Copyright", "Patent", "Trade Secret", "Trademark"],
+                    ans: 3
+                },
+                {
+                    q: "An intelligence agency justifies preemptive cyber strikes to prevent attacks. Which ethical principle may challenge this approach?",
+                    opts: ["Utilitarianism", "Deontological ethics", "Proportionality", "Attribution"],
+                    ans: 1
+                },
+                {
+                    q: "An investigator documents the handling of a hard drive from collection to storage. This process is known as:",
+                    opts: ["Evidence Analysis", "Chain of Custody", "Incident Response", "Digital Footprinting"],
+                    ans: 1
+                },
+                {
+                    q: "An organization discovers a state-sponsored attack on its systems but cannot conclusively determine the origin. This difficulty illustrates the challenge of:",
+                    opts: ["Escalation", "Proportionality", "Attribution", "Necessity"],
+                    ans: 2
+                },
+                {
+                    q: "An organization mandates regular software updates to prevent unauthorized access. Which responsibility does this reinforce?",
+                    opts: ["Reporting Misuse", "Maintaining Cyber Hygiene", "Digital Ownership", "Freedom of Expression"],
+                    ans: 1
+                },
+                {
+                    q: "During a cyber conflict, a state deploys malware that unintentionally affects civilian hospitals. Which ethical principle is most likely violated?",
+                    opts: ["Necessity", "Proportionality", "Transparency", "Consent"],
+                    ans: 1
+                },
+                {
+                    q: "During a penetration test, a tester identifies data outside the agreed-upon scope. What is their best course of action?",
+                    opts: ["Report it immediately", "Ignore it to avoid liability", "Continue testing without notifying", "Document it but do not disclose"],
+                    ans: 0
+                }
+            ]
+        }
+    ];
+
+    const tabsBar = document.getElementById('tabsBar');
+    const contentSections = document.getElementById('contentSections');
+
+    // الدالة الرئيسية لتهيئة الصفحة وبناء العناصر
+    function buildInterface() {
+        completeDatabase.forEach((section, sIdx) => {
+            // 1. توليد التبويبات العلوية
+            const tabBtn = document.createElement('button');
+            tabBtn.type = 'button';
+            tabBtn.className = `tab-btn ${sIdx === 0 ? 'active' : ''}`;
+            
+            // اختصار الأسماء للتبويبات لتبدو أنيقة
+            let shortName = section.title.split(':')[0].replace(/\(.*?\)/g, '').trim();
+            tabBtn.innerText = shortName;
+            tabBtn.onclick = (e) => switchSection(sIdx, e.target);
+            tabsBar.appendChild(tabBtn);
+
+            // 2. توليد المحتوى لكل قسم
+            const sectionDiv = document.createElement('div');
+            sectionDiv.className = `section-content ${sIdx === 0 ? 'active' : ''}`;
+            sectionDiv.id = `sec-${sIdx}`;
+
+            let htmlContent = `
+                <div class="section-header">
+                    <h2 class="section-title">${section.title}</h2>
+                    <span class="question-count-badge">${section.questions.length} أسئلة</span>
+                </div>
+            `;
+
+            section.questions.forEach((qItem, qIdx) => {
+                let optionsHtml = '';
+                qItem.opts.forEach((optStr, oIdx) => {
+                    optionsHtml += `
+                        <li>
+                            <label class="option-label" id="lbl-${sIdx}-${qIdx}-${oIdx}">
+                                <input type="radio" name="q_${sIdx}_${qIdx}" value="${oIdx}">
+                                <span>${optStr}</span>
+                            </label>
+                        </li>
+                    `;
+                });
+
+                htmlContent += `
+                    <div class="question-card">
+                        <div class="question-text">${qIdx + 1}. ${qItem.q}</div>
+                        <ul class="options-group">
+                            ${optionsHtml}
+                        </ul>
+                    </div>
+                `;
+            });
+
+            // إضافة زر التسليم ومربع النتيجة لكل تبويب
+            htmlContent += `
+                <div class="submit-area">
+                    <button type="button" class="action-btn" onclick="submitAnswers(${sIdx})">
+                        تحقق من الإجابات (${shortName})
+                    </button>
+                    <div class="score-display" id="res-${sIdx}"></div>
+                </div>
+            `;
+
+            sectionDiv.innerHTML = htmlContent;
+            contentSections.appendChild(sectionDiv);
+        });
+    }
+
+    // دالة التبديل بين التبويبات
+    function switchSection(targetIdx, clickedBtn) {
+        // تحديث حالة الأزرار
+        document.querySelectorAll('.tab-btn').forEach((btn, idx) => {
+            btn.classList.toggle('active', idx === targetIdx);
+        });
+
+        // تحديث المحتوى المعروض
+        document.querySelectorAll('.section-content').forEach((sec, idx) => {
+            sec.classList.toggle('active', idx === targetIdx);
+        });
+
+        // التمرير التلقائي للتبويب ليتوسط الشاشة (مفيد للجوال)
+        clickedBtn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    }
+
+    // دالة تصحيح الإجابات وحساب الدرجة
+    function submitAnswers(sIdx) {
+        const sectionData = completeDatabase[sIdx];
+        let correctAnswersCount = 0;
+        let missedQuestions = false;
+
+        sectionData.questions.forEach((qItem, qIdx) => {
+            const selectedRadio = document.querySelector(`input[name="q_${sIdx}_${qIdx}"]:checked`);
+            
+            // إزالة التنسيقات السابقة
+            qItem.opts.forEach((_, oIdx) => {
+                document.getElementById(`lbl-${sIdx}-${qIdx}-${oIdx}`).classList.remove('correct-answer', 'wrong-answer');
+            });
+
+            if (selectedRadio) {
+                const answerVal = parseInt(selectedRadio.value);
+                if (answerVal === qItem.ans) {
+                    correctAnswersCount++;
+                    document.getElementById(`lbl-${sIdx}-${qIdx}-${answerVal}`).classList.add('correct-answer');
+                } else {
+                    document.getElementById(`lbl-${sIdx}-${qIdx}-${answerVal}`).classList.add('wrong-answer');
+                    // إبراز الإجابة الصحيحة
+                    document.getElementById(`lbl-${sIdx}-${qIdx}-${qItem.ans}`).classList.add('correct-answer');
+                }
+            } else {
+                missedQuestions = true;
+                // إبراز الإجابة الصحيحة للمستخدم حتى لو لم يجب
+                document.getElementById(`lbl-${sIdx}-${qIdx}-${qItem.ans}`).classList.add('correct-answer');
+            }
+        });
+
+        // إظهار النتيجة للمستخدم
+        const resBox = document.getElementById(`res-${sIdx}`);
+        resBox.style.display = 'block';
+        const totalQ = sectionData.questions.length;
+        const scorePercent = Math.round((correctAnswersCount / totalQ) * 100);
+
+        if (scorePercent >= 60) {
+            resBox.style.backgroundColor = '#ecfdf5';
+            resBox.style.color = '#065f46';
+            resBox.style.border = '2px solid #10b981';
+            resBox.innerHTML = `🎉 ممتاز! نتيجتك: <strong>${correctAnswersCount} / ${totalQ}</strong> (${scorePercent}%)`;
+        } else {
+            resBox.style.backgroundColor = '#fef2f2';
+            resBox.style.color = '#991b1b';
+            resBox.style.border = '2px solid #ef4444';
+            resBox.innerHTML = `⚠️ نتيجتك: <strong>${correctAnswersCount} / ${totalQ}</strong> (${scorePercent}%) - يُرجى مراجعة الإجابات المحددة باللون الأخضر.`;
+        }
+
+        if (missedQuestions) {
+            resBox.innerHTML += `<br><span style="font-size:0.85rem; color:#64748b; font-weight:normal;">(ملاحظة: تُركت بعض الأسئلة بدون إجابة)</span>`;
+        }
+
+        // التمرير لرؤية النتيجة بوضوح
+        resBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    // تهيئة الصفحة فور اكتمال التحميل
+    window.onload = buildInterface;
+</script>
+
+</body>
+</html>
